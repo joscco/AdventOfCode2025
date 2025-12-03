@@ -13,7 +13,6 @@ with open("input.txt") as f:
                 sum_a += n
             if is_silly_number(str(n), len(str(n))):
                 sum_b += n
-    # Part1
-    print(sum_a)
-    # Part2
-    print(sum_b)
+
+    print("Part 1:", sum_a)
+    print("Part 2:", sum_b)

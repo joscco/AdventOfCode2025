@@ -24,5 +24,5 @@ with open("input.txt") as f:
             part_2_counter -= 1
         prev_val = new_val
 
-    print(part_1_counter)
-    print(part_2_counter)
+    print("Part 1:", part_1_counter)
+    print("Part 2:", part_2_counter)
