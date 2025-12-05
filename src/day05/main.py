@@ -1,33 +1,36 @@
+def fresh_ids_within(intervals, ids):
+    return [
+        any(start <= id_ <= end for start, end in intervals)
+        for id_ in ids
+    ]
+
+
+def total_number_of_possible_fresh_ids(raw_intervals):
+    disjoint_intervals = []
+    for interval in sorted(raw_intervals):
+        # Because of the natural sorting and the intervals
+        # in disjoint_intervals are already disjoint,
+        # we only have to check for overlaps with the last interval
+        if not disjoint_intervals or disjoint_intervals[-1][1] < interval[0]:
+            disjoint_intervals.append(interval)
+        else:
+            start, end = disjoint_intervals[-1]
+            disjoint_intervals[-1] = (start, max(end, interval[1]))
+
+    return sum(
+        end - start + 1 for start, end in disjoint_intervals
+    )
+
+
 with open("input.txt") as f:
     lines = f.readlines()
 
     split_index = lines.index("\n")
-    intervalls = []
-    for line in lines[:split_index]:
-        bounds = line.split("-")
-        intervalls.append((int(bounds[0]), int(bounds[1])))
+    intervals = [tuple(map(int, line.split("-"))) for line in lines[:split_index]]
     ids = [int(line) for line in lines[split_index + 1:]]
 
-    valid_ids = 0
-    for id_ in ids:
-        is_valid = False
-        for intervall in intervalls:
-            if intervall[0] <= id_ <= intervall[1]:
-                is_valid = True
-                break
-        if is_valid:
-            valid_ids += 1
+    fresh_ids = fresh_ids_within(intervals, ids)
+    print("Part 1:", sum(fresh_ids))
 
-    print("Part 1:", valid_ids)
-
-    disjoint_intervalls = []
-    for intervall in sorted(intervalls):
-        if not disjoint_intervalls or disjoint_intervalls[-1][1] < intervall[0]:
-            disjoint_intervalls.append(intervall)
-        else:
-            disjoint_intervalls[-1] = (disjoint_intervalls[-1][0], max(disjoint_intervalls[-1][1], intervall[1]))
-
-    number_of_valid_ids = 0
-    for intervall in disjoint_intervalls:
-        number_of_valid_ids += intervall[1] - intervall[0] + 1
-    print("Part 2:", number_of_valid_ids)
+    possible_fresh_ids = total_number_of_possible_fresh_ids(intervals)
+    print("Part 2:", possible_fresh_ids)
