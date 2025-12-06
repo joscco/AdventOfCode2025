@@ -1,12 +1,15 @@
 def to_cephalopod(col):
     new_col = []
-    # There are always <= 4 digits in cephalopod numbers
-    for i in range(4):
-        new_col.append("")
+    max_len = max(len(s) for s in col) if col else 0
+
+    for i in range(max_len):
+        current = ""
         for col_string in col:
             if i < len(col_string):
-                new_col[i] += col_string[i]
-    return [int(s) for s in new_col if s.strip() != ""]
+                current += col_string[i]
+        if current.strip() != "":
+            new_col.append(int(current))
+    return new_col
 
 def evaluate_columns(operators, columns):
     total = 0
@@ -23,9 +26,9 @@ with open("input.txt") as f:
     raw_lines = f.readlines()
 
     for x in range(len(raw_lines[-1])):
-        ch = raw_lines[-1][x]
-        if ch in ["*", "+"]:
-            operators.append(ch)
+        char = raw_lines[-1][x]
+        if char in ["*", "+"]:
+            operators.append(char)
             cols.append([raw_lines[i][x] for i in range(len(raw_lines) - 1)])
         else:
             for i in range(len(raw_lines) - 1):
