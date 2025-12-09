@@ -15,15 +15,15 @@ with open("input.txt") as f:
         size = (r_x2 - r_x1 + 1) * (r_y2 - r_y1 + 1)
 
         if size > part_2:
-            # I don't know how to figure out if the red triangle is "contained" in the union of green triangles
-            # BUT we can check the opposite: if the red triangle "cuts" any green triangle side, it's not contained
-            # (since the green triangles always "touch" the outside world)
+            # I don't know how to figure out if the red rectangle is "contained" in the union of green rectangles
+            # BUT we can check the opposite: if the red rectangle "cuts" any green side, it's not contained
+            # (since the green sides always "touch" the outside world)
             for g_x1, g_y1, g_x2, g_y2 in green_sides:
                 # It's always either g_x1 == g_x2 or g_y1 == g_y2
                 if r_x1 < g_x2 and g_x1 < r_x2 and r_y1 < g_y2 and g_y1 < r_y2:
                     break
             else:
-                # The red triangle does NOT cut any green side
+                # The red rectangle does NOT cut any green side
                 part_2 = max(part_2, size)
 
         part_1 = max(part_1, size)
